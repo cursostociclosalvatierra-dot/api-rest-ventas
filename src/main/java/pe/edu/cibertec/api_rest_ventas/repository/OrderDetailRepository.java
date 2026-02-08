@@ -9,3 +9,4 @@ public interface OrderDetailRepository
  extends JpaRepository<OrderDetail, ProductOrderId>{
 
 }
+
