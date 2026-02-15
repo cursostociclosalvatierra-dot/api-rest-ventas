@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import pe.edu.cibertec.api_rest_ventas.dto.EntityDto;
 import pe.edu.cibertec.api_rest_ventas.dto.ProductDto;
+import pe.edu.cibertec.api_rest_ventas.model.Product;
 import pe.edu.cibertec.api_rest_ventas.repository.ProductRepository;
 import pe.edu.cibertec.api_rest_ventas.util.ModelMapperDto;
 
@@ -30,6 +31,11 @@ public class ProductService {
 		if(dtoList.isEmpty())
 			return null;
 		return dtoList;
+	}
+	
+	
+	public List<Product> getProductByDiscontinued(Boolean discontinued){
+		return productRepository.getProductsNonDiscontinuedSQL(discontinued);
 	}
 
 }

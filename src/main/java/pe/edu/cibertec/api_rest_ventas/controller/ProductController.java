@@ -1,16 +1,17 @@
 package pe.edu.cibertec.api_rest_ventas.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.edu.cibertec.api_rest_ventas.dto.EntityDto;
 import pe.edu.cibertec.api_rest_ventas.dto.GenericResponseDto;
+import pe.edu.cibertec.api_rest_ventas.model.Product;
 import pe.edu.cibertec.api_rest_ventas.service.ProductService;
 
 @RestController
@@ -33,6 +34,20 @@ public class ProductController {
 		GenericResponseDto<List<EntityDto>> response = 
 				new GenericResponseDto<>();
 		response.setResponse(dtoList);
+		return ResponseEntity.ok(response);
+	}
+	//localhost:8061/api/v1/product/exists?discontinued=true
+	@GetMapping("/exists")
+	public ResponseEntity<GenericResponseDto<List<Product>>>
+	 getProductsByDiscontinued(@RequestParam Boolean discontinued){
+		List<Product> productList = productService
+				.getProductByDiscontinued(discontinued);
+		if(productList.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+		GenericResponseDto<List<Product>> response = 
+				new GenericResponseDto<>();
+		response.setResponse(productList);
 		return ResponseEntity.ok(response);
 	}
 	
