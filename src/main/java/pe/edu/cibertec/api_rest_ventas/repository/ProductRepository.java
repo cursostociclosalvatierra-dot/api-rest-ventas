@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
 import jakarta.transaction.Transactional;
@@ -52,6 +53,33 @@ public interface ProductRepository extends
 			""", nativeQuery = true)
 	void updateStockProductsById(@Param("stock") Integer stock,
 			@Param("productid") Integer productid);
+	
+	@Modifying
+	@Transactional
+	@Query(value = """
+			CALL RegistrarProducto (:productname, 
+			:supplierid, :categoryid, :unitprice)
+			""",
+			nativeQuery = true)
+	void fastRegisterProduct(@Param("productname") String productname,
+			@Param("supplierid") Integer supplierid,
+			@Param("categoryid") Integer categoryid,
+			@Param("unitprice") Double unitprice);
+	
+	@Modifying
+	@Transactional	
+	@Query(value = """
+			CALL ActualizarProducto (:p_productid, 
+			:p_productname, :p_supplierid, :p_categoryid)
+			""",
+			nativeQuery = true)
+	void fastUpdateProduct(@Param("p_productid") Integer productid,
+			@Param("p_productname") String productname,
+			@Param("p_supplierid") Integer supplierid,
+			@Param("p_categoryid") Integer categoryid);
+	
+	
+	
 	
 	
 	
