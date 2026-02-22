@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import pe.edu.cibertec.api_rest_ventas.dto.EntityDto;
 import pe.edu.cibertec.api_rest_ventas.dto.ProductDto;
+import pe.edu.cibertec.api_rest_ventas.model.Category;
 import pe.edu.cibertec.api_rest_ventas.model.Product;
+import pe.edu.cibertec.api_rest_ventas.projection.ProductContactProjection;
 import pe.edu.cibertec.api_rest_ventas.repository.ProductRepository;
 import pe.edu.cibertec.api_rest_ventas.util.ModelMapperDto;
 
@@ -20,7 +22,11 @@ public class ProductService {
 	public ProductService(ProductRepository productRepository) {
 		this.productRepository = productRepository;
 	}
+	
 
+
+	
+	
 	public List<EntityDto> getAllProducts(){
 		List<EntityDto> dtoList = new ArrayList<>();
 		dtoList = productRepository.findAll()
@@ -36,6 +42,17 @@ public class ProductService {
 	
 	public List<Product> getProductByDiscontinued(Boolean discontinued){
 		return productRepository.getProductsNonDiscontinuedSQL(discontinued);
+	}
+	
+	public List<ProductContactProjection> getProductsByStockDiscontinued(
+			Integer stock, Boolean discontinued){
+		return productRepository.getProductsByStockDiscontinued(stock,
+				discontinued);
+	}
+	
+	public void updateStockProductsById(Integer stock, 
+			Integer productid) {
+		productRepository.updateStockProductsById(stock, productid);
 	}
 
 }
